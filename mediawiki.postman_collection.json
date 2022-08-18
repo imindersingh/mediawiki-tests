@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "0fbb871a-e0e3-4f57-a754-0345a320cef6",
+		"name": "MedaiWiki",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth Manager Info",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "WMF-Last-Access=17-Aug-2022; WMF-Last-Access-Global=17-Aug-2022; GeoIP=GB%3AENG%3ABradford%3A53.80%3A-1.76%3Av4; ss0-mediawikiwikiSession=sfvsa0vf6cqip5ps2dk6nvcojfap1kea; mediawikiwikiSession=sfvsa0vf6cqip5ps2dk6nvcojfap1kea"
+					}
+				],
+				"url": {
+					"raw": "https://www.mediawiki.org/w/api.php?action=query&format=json&meta=tokens&type=login",
+					"protocol": "https",
+					"host": [
+						"www",
+						"mediawiki",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "query"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "meta",
+							"value": "tokens"
+						},
+						{
+							"key": "type",
+							"value": "login"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "WMF-Last-Access=17-Aug-2022; WMF-Last-Access-Global=17-Aug-2022; GeoIP=GB%3AENG%3ABradford%3A53.80%3A-1.76%3Av4; ss0-mediawikiwikiSession=sfvsa0vf6cqip5ps2dk6nvcojfap1kea; mediawikiwikiSession=sfvsa0vf6cqip5ps2dk6nvcojfap1kea"
+					}
+				],
+				"url": {
+					"raw": "https://www.mediawiki.org/w/api.php?action=query&format=json&meta=tokens&type=login",
+					"protocol": "https",
+					"host": [
+						"www",
+						"mediawiki",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "query"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "meta",
+							"value": "tokens"
+						},
+						{
+							"key": "type",
+							"value": "login"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Page Info Last Revision",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "WMF-Last-Access=17-Aug-2022; WMF-Last-Access-Global=17-Aug-2022; GeoIP=GB%3AENG%3ABradford%3A53.80%3A-1.76%3Av4; ss0-mediawikiwikiSession=sfvsa0vf6cqip5ps2dk6nvcojfap1kea; mediawikiwikiSession=sfvsa0vf6cqip5ps2dk6nvcojfap1kea"
+					}
+				],
+				"url": {
+					"raw": "https://www.mediawiki.org/w/api.php?action=query&format=json&meta=tokens&type=login",
+					"protocol": "https",
+					"host": [
+						"www",
+						"mediawiki",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "query"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "meta",
+							"value": "tokens"
+						},
+						{
+							"key": "type",
+							"value": "login"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "lgpassword",
+							"value": "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg",
+							"type": "default"
+						},
+						{
+							"key": "lgtoken",
+							"value": "a289a1891f1b581714f610eff180bf8c62fd1520+\\\\",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://www.mediawiki.org/w/api.php?lgname=Mytestuserbot12345&format=json&action=login",
+					"protocol": "https",
+					"host": [
+						"www",
+						"mediawiki",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "lgname",
+							"value": "Mytestuserbot12345"
+						},
+						{
+							"key": "lgpassword",
+							"value": "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg",
+							"disabled": true
+						},
+						{
+							"key": "lgtoken",
+							"value": "875361be675345e34bfb321024d241ce62fd12fd+\\\\",
+							"disabled": true
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "logintoken",
+							"value": "c3fc82cdcb0ec5b1f4905eabed6e831c62fd14ab%2B%5C%5C",
+							"disabled": true
+						},
+						{
+							"key": "action",
+							"value": "login"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "lgpassword",
+							"value": "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg",
+							"type": "default"
+						},
+						{
+							"key": "lgtoken",
+							"value": "a289a1891f1b581714f610eff180bf8c62fd1520+\\\\",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://www.mediawiki.org/w/api.php?lgname=Mytestuserbot12345&format=json&action=login",
+					"protocol": "https",
+					"host": [
+						"www",
+						"mediawiki",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "lgname",
+							"value": "Mytestuserbot12345"
+						},
+						{
+							"key": "lgpassword",
+							"value": "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg",
+							"disabled": true
+						},
+						{
+							"key": "lgtoken",
+							"value": "875361be675345e34bfb321024d241ce62fd12fd+\\\\",
+							"disabled": true
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "logintoken",
+							"value": "c3fc82cdcb0ec5b1f4905eabed6e831c62fd14ab%2B%5C%5C",
+							"disabled": true
+						},
+						{
+							"key": "action",
+							"value": "login"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Client Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "lgpassword",
+							"value": "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg",
+							"type": "default"
+						},
+						{
+							"key": "lgtoken",
+							"value": "a289a1891f1b581714f610eff180bf8c62fd1520+\\\\",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://www.mediawiki.org/w/api.php?lgname=Mytestuserbot12345&format=json&action=login",
+					"protocol": "https",
+					"host": [
+						"www",
+						"mediawiki",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "lgname",
+							"value": "Mytestuserbot12345"
+						},
+						{
+							"key": "lgpassword",
+							"value": "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg",
+							"disabled": true
+						},
+						{
+							"key": "lgtoken",
+							"value": "875361be675345e34bfb321024d241ce62fd12fd+\\\\",
+							"disabled": true
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "logintoken",
+							"value": "c3fc82cdcb0ec5b1f4905eabed6e831c62fd14ab%2B%5C%5C",
+							"disabled": true
+						},
+						{
+							"key": "action",
+							"value": "login"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add / Edit Page",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}

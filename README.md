@@ -80,6 +80,8 @@ To run all the tests and generate a html report: `mvn clean test site`
 ### Results
 You can find the report under the /reports directory at the root. In total, 9 tests were implemented
 
+![results](results.png)
+
 ## Improvements
 Some improvements that I think can be made include:
 - Whilst maps for query and form params is acceptable, there is a lot of hardcoded values in the tests, so to eliminate this the request and responses can be converted into DTOS. 

@@ -12,7 +12,7 @@ public class EditPageRequests {
 
   public static Response post(final RequestSpecification requestSpecification,
                               final CookieFilter cookieFilter,
-                              final Map<String, ?> formParams ) {
+                              final Map<String, ?> formParams) {
     return given(requestSpecification)
         .filter(cookieFilter)
         .queryParam("action", "edit")

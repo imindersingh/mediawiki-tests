@@ -27,10 +27,11 @@ public class EditPageTests {
   private static RequestSpecification requestSpec;
   private static String csrfToken;
 
+  @SuppressWarnings("checkstyle:WhitespaceAfter")
   @BeforeAll
   public static void setUp() {
     requestSpec = BaseRequestSpecification.requestSpecification("https://test.wikipedia.org/w/api.php", COOKIE_FILTER);
-    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER,"login", "logintoken");
+    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
       put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
       put("lgtoken", loginToken);

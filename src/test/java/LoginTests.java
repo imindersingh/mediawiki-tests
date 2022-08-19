@@ -15,10 +15,8 @@ import requests.LogoutRequests;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class LoginTests {
-
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
   private static RequestSpecification requestSpec;
-
   @BeforeAll
   public static void setUp() {
     requestSpec = BaseRequestSpecification.requestSpecification("https://test.wikipedia.org/w/api.php", COOKIE_FILTER);
@@ -35,7 +33,7 @@ public class LoginTests {
 
   @Test
   void givenValidLoginTokenCanLoginSuccessfully() {
-    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER,"login", "logintoken");
+    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
 
     final Map<String, ?> body = new HashMap<>() {{
       put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");

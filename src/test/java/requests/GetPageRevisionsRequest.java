@@ -12,8 +12,7 @@ public class GetPageRevisionsRequest {
 
   public static Response get(final RequestSpecification requestSpecification,
                final CookieFilter cookieFilter,
-               final Map<String, ?> queryParams ) {
-
+               final Map<String, ?> queryParams) {
     return given(requestSpecification)
         .filter(cookieFilter)
         .queryParams(queryParams)

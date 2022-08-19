@@ -27,16 +27,15 @@ public class CreatePageTests {
   @BeforeAll
   public static void setUp() {
     requestSpec = BaseRequestSpecification.requestSpecification("https://test.wikipedia.org/w/api.php", COOKIE_FILTER);
-    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER,"login", "logintoken");
+    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
       put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
       put("lgtoken", loginToken);
       put("lgname", "Mytestuser12345@Mytestuserbot12345");
     }};
     LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
-    csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER,"csrf", "csrftoken");
+    csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "csrf", "csrftoken");
   }
-
   @AfterAll
   public static void tearDown() {
     LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
@@ -44,7 +43,6 @@ public class CreatePageTests {
         .assertThat()
         .statusCode(200);
   }
-
   @Test
   void givenValidCsrfTokenThenCanCreatePage() {
     final String pageTitle = Helper.getRandomAlphanumeric(15);
@@ -69,7 +67,7 @@ public class CreatePageTests {
 
   @ParameterizedTest
   @ValueSource(strings = {"5a469c984f28f000bacd4908acd187dd62fe3492+\\", "  ", "invalid"})
-  void givenInvalidCsrfTokenThenCannotCreatePage(String token) {
+  void givenInvalidCsrfTokenThenCannotCreatePage(final String token) {
     final String pageTitle = Helper.getRandomAlphanumeric(15);
 
     final Map<String, ?> createPage = new HashMap<>() {{
@@ -89,6 +87,4 @@ public class CreatePageTests {
         .body("error.code", equalTo("badtoken"))
         .body("error.info", equalTo("Invalid CSRF token."));
   }
-
-  //5a469c984f28f000bacd4908acd187dd62fe3492+\
 }

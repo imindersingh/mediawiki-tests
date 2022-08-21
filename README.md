@@ -78,9 +78,9 @@ To run all the tests: `mvn clean test`
 To run all the tests and generate a html report: `mvn clean test site`
 
 ### Results
-You can find the report under the /reports directory at the root. In total, 9 tests were implemented
+You can find the report under the /reports directory at the root after the tests are executed. In total, 9 tests were implemented
 
-![results](results.png)
+![results](mediawiki-tests-reports-surefire-report-html.png)
 
 ## Improvements
 Some improvements that I think can be made include:

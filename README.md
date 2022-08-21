@@ -8,7 +8,7 @@ Api tests for MediaWiki functionality using Rest Assured
 - JUnit
 
 ## Approach
-- My first step in understanding the task was to read through the documentation before creating any automated checks
+- My first step in understanding the functionlity was to read through the documentation before creating any automated checks
 - I found the documentation quite difficult to navigate through but needless to say this is the fun part of testing applications and software
 - I studied the documentation and explored the application to answer a number of questions to help shape my approach. See below.
 

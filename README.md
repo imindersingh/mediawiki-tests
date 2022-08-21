@@ -5,7 +5,7 @@ Api tests for MediaWiki functionality using Rest Assured
 ## Project Dependencies
 - Java 11
 - Maven
-- Lombok plugin for IDE and annotations enabled
+- JUnit
 
 ## Approach
 - My first step in understanding the task was to read through the documentation before creating any automated checks

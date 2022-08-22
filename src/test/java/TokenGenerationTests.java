@@ -16,6 +16,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class TokenGenerationTests {
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
   public static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
+  private static final int OK = 200;
   private static RequestSpecification requestSpec;
 
   @BeforeAll
@@ -25,16 +26,16 @@ public class TokenGenerationTests {
 
   @AfterEach
   public void tearDown() {
-    final Map<String, ?> queryParams = new HashMap<>() {{
+    final Map<String, ?> getTokenQueryParams = new HashMap<>() {{
       put("action", "query");
       put("meta", "tokens");
       put("type", "csrf");
     }};
 
-    String csrfToken = GetTokenRequests.get(requestSpec, COOKIE_FILTER, queryParams)
+    String csrfToken = GetTokenRequests.get(requestSpec, COOKIE_FILTER, getTokenQueryParams)
         .then()
         .assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .extract()
         .path("query.tokens.csrftoken");
 
@@ -42,14 +43,14 @@ public class TokenGenerationTests {
       LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
           .then()
           .assertThat()
-          .statusCode(200);
+          .statusCode(OK);
     }
   }
 
   @Test
   void whenNotLoggedInThenCreateAccountAndLoginTokenAreAvailable() {
     final String tokenType = "*";
-    final Map<String, ?> queryParams = new HashMap<>() {{
+    final Map<String, ?> getTokenQueryParams = new HashMap<>() {{
       put("action", "query");
       put("meta", "tokens");
       put("type", tokenType);
@@ -58,10 +59,10 @@ public class TokenGenerationTests {
     final int validTokenLength = 42;
     final String defaultToken = "+\\";
 
-    GetTokenRequests.get(requestSpec, COOKIE_FILTER, queryParams)
+    GetTokenRequests.get(requestSpec, COOKIE_FILTER, getTokenQueryParams)
         .then()
         .assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("query.tokens.size()", is(9))
         .body("query.tokens.createaccounttoken.size()", is(validTokenLength))
         .body("query.tokens.logintoken.size()", is(validTokenLength))
@@ -85,7 +86,7 @@ public class TokenGenerationTests {
     LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
 
     final String tokenType = "*";
-    final Map<String, ?> queryParams = new HashMap<>() {{
+    final Map<String, ?> getTokenQueryParams = new HashMap<>() {{
       put("action", "query");
       put("meta", "tokens");
       put("type", tokenType);
@@ -93,10 +94,10 @@ public class TokenGenerationTests {
 
     final int validTokenLength = 42;
 
-    GetTokenRequests.get(requestSpec, COOKIE_FILTER, queryParams)
+    GetTokenRequests.get(requestSpec, COOKIE_FILTER, getTokenQueryParams)
         .then()
         .assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("query.tokens.size()", is(9))
         .body("query.tokens.createaccounttoken.size()", is(validTokenLength))
         .body("query.tokens.logintoken.size()", is(validTokenLength))

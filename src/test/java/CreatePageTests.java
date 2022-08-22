@@ -1,6 +1,7 @@
 import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import model.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import requests.EditPageRequests;
 import requests.BaseRequestSpecification;
 import requests.LoginRequests;
 import requests.LogoutRequests;
+import requests.GetPageRevisionsRequest;
 import utils.Helper;
 
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class CreatePageTests {
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
   private static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
+  private static final int OK = 200;
   private static RequestSpecification requestSpec;
   private static String csrfToken;
 
@@ -28,10 +31,14 @@ public class CreatePageTests {
   public static void setUp() {
     requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
     final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
+    final User user = User.builder()
+            .name("Mytestuser12345@Mytestuserbot12345")
+            .password("6ker6i5itf0rhm7mfi08vrrvtjmfcnsg")
+            .build();
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
-      put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
+      put("lgpassword", user.password());
       put("lgtoken", loginToken);
-      put("lgname", "Mytestuser12345@Mytestuserbot12345");
+      put("lgname", user.name());
     }};
     LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
     csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "csrf", "csrftoken");
@@ -42,7 +49,7 @@ public class CreatePageTests {
     LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
         .then()
         .assertThat()
-        .statusCode(200);
+        .statusCode(OK);
   }
 
   @Test
@@ -60,7 +67,7 @@ public class CreatePageTests {
 
     Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
     createPageResponse.then().assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("edit.result", equalTo("Success"))
         .body("edit.title", equalTo(pageTitle));
   }
@@ -82,7 +89,7 @@ public class CreatePageTests {
 
     Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
     createPageResponse.then().assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("error.code", equalTo("badtoken"))
         .body("error.info", equalTo("Invalid CSRF token."));
   }

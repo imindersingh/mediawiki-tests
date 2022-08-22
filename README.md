@@ -5,6 +5,7 @@ Api tests for MediaWiki functionality using Rest Assured.
 ## Project Dependencies
 - Java 11
 - Maven
+- Lombok and annotations enabled
 
 ## Approach
 - My first step in understanding the functionality was to read through the documentation before creating any 
@@ -25,7 +26,7 @@ I explored the following areas:
 - What are the validation rules for the APIs?
     - The documentation is vast and not the best laid out, so I focused on understanding the rules for the journeys I was testing.
     - Tokens are integral to be able to perform a lot of the functionality.
-    - There wasn't any clear documentation on what a valid token looked like, and the fact that the `+\` was escaped in the json response as `+\\` was not obvious at first. However, with some trial and error I was able to understand this and able to login in successfully with a valid token.
+    - There wasn't any clear documentation on what a valid token looked like, and the fact that the `+\` was escaped in the json response as `+\\` was not obvious at first. However, with some trial and error I was able to understand this and able to login successfully with a valid token.
 - Where can I test?
   - I decided to stick with testing the functionality against test.wikipedia.com given that this is powered entirely by mediawiki and was the safest to test against.
 
@@ -46,7 +47,8 @@ The libraries used in this framework include:
 - My initial approach was to get tests working for the journeys being tested, so at a high level I abstracted out concepts such as login, token generation, create and edit.
 - Once I had the tests working, I applied DRY and OOP concepts to make the code cleaner.
 - Cookies are required to be persisted for the journeys so this is done through the cookie filter object initialised and passed to all the requests in the tests.
-- I've separated out the requests in their own classes to return the responses and to assert them in the tests, rather than coupling the requests and assertions in the test. This allows for reusability. 
+- I've separated out the requests in their own classes to return the responses and to assert them in the tests, 
+  rather than coupling the requests and assertions in the test. This allows for reusability. 
 - See structure below:
 
 ```
@@ -86,7 +88,8 @@ site`. In total, 9 tests were implemented.
 
 ## Improvements
 Some improvements that I think can be made include:
-- Whilst maps for query and form params is acceptable, there is a lot of hardcoded values in the tests, so to eliminate this the request and responses can be converted into DTOS. 
+- Whilst maps for query and form params is acceptable, there is a lot of hardcoded values in the tests, so to 
+  eliminate this the request and responses can be converted into DTOs. 
 - I did try to model this with the edit page tests use a `Page` model and passed this in as a body to the POST request, but this did not quite work. I also tried setting the `Content-Type` header as well. I would have explored this further given the time.
 - Things like credentials, urls and so forth can be extracted out into properties to allow the tests to be more readable and scalable to run on different environments.
 - I have implemented GitHub [actions](https://github.com/imindersingh/mediawiki-tests/actions) to build and run the 

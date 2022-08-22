@@ -2,6 +2,7 @@ import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import model.User;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +24,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class EditPageTests {
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
   private static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
+  private static final int OK = 200;
   private static RequestSpecification requestSpec;
   private static String csrfToken;
 
@@ -30,10 +32,14 @@ public class EditPageTests {
   public static void setUp() {
     requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
     final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
+    final User user = User.builder()
+            .name("Mytestuser12345@Mytestuserbot12345")
+            .password("6ker6i5itf0rhm7mfi08vrrvtjmfcnsg")
+            .build();
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
-      put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
+      put("lgpassword", user.password());
       put("lgtoken", loginToken);
-      put("lgname", "Mytestuser12345@Mytestuserbot12345");
+      put("lgname", user.name());
     }};
     LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
     csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "csrf", "csrftoken");
@@ -44,7 +50,7 @@ public class EditPageTests {
     LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
         .then()
         .assertThat()
-        .statusCode(200);
+        .statusCode(OK);
 }
 
   @Test
@@ -64,14 +70,14 @@ public class EditPageTests {
     Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
 
     createPageResponse.then().assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("edit.result", equalTo("Success"))
         .body("edit.title", equalTo(pageTitle));
 
     createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
 
     createPageResponse.then().assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("error.code", equalTo("articleexists"))
         .body("error.info", equalTo("The article you tried to create has been created already."));
   }
@@ -92,7 +98,7 @@ public class EditPageTests {
     Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
 
     createPageResponse.then().assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("edit.result", equalTo("Success"))
         .body("edit.title", equalTo(pageTitle));
 
@@ -117,7 +123,7 @@ public class EditPageTests {
     Response editPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, editPageFormParams);
 
     editPageResponse.then().assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("edit.result", equalTo("Success"))
         .body("edit.title", equalTo(pageTitle));
 
@@ -148,7 +154,7 @@ public class EditPageTests {
     Response getPageRevisionResponse = GetPageRevisionsRequest.get(requestSpec, COOKIE_FILTER, queryParams);
 
     getPageRevisionResponse.then().assertThat()
-        .statusCode(200)
+        .statusCode(OK)
         .body("query.pages", Matchers.hasKey(pageId))
         .body(String.format("query.pages.%s.title", pageId), equalTo(pageTitle));
 

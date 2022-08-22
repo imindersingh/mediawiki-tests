@@ -46,7 +46,7 @@ public class TokenGenerationTests {
   }
 
   @Test
-  void whenNotLoggedInThenCreateAccountAndLoginTokenAreAvailable() {
+  void whenNotLoggedInThenOnlyCreateAccountAndLoginTokenAreReturned() {
     final String tokenType = "*";
     final Map<String, ?> getTokenQueryParams = new HashMap<>() {{
       put("action", "query");

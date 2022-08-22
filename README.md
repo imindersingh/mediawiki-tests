@@ -2,8 +2,6 @@
 
 Api tests for MediaWiki functionality using Rest Assured.
 
-![example workflow](https://github.com/imindersingh/mediawiki-tests/actions/workflows/main.yml/badge.svg)
-
 ## Project Dependencies
 - Java 11
 - Maven

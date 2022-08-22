@@ -46,7 +46,7 @@ The libraries used in this framework include:
 ### Design Approach
 - My initial approach was to get tests working for the journeys being tested, so at a high level I abstracted out concepts such as login, token generation, create and edit.
 - Once I had the tests working, I applied DRY and OOP concepts to make the code cleaner.
-- Cookies are required to be persisted for the journeys so this is done through the cookie filter object initialised and passed to all the requests in the tests.
+- Cookies are required to be persisted for the journeys so this is done through the cookie filter object initialised and passed to all the requests in the tests from the base specification defined.
 - I've separated out the requests in their own classes to return the responses and to assert them in the tests, 
   rather than coupling the requests and assertions in the test. This allows for reusability. 
 - See structure below:

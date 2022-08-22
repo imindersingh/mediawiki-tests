@@ -1,4 +1,3 @@
-import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.specification.RequestSpecification;
 import model.User;
 import org.junit.jupiter.api.AfterAll;
@@ -15,19 +14,20 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class LoginTests {
-  private static final CookieFilter COOKIE_FILTER = new CookieFilter();
   public static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
   private static final int OK = 200;
   private static RequestSpecification requestSpec;
+
   @BeforeAll
   public static void setUp() {
-    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
+    //requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
+    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL);
   }
 
   @AfterAll
   public static void tearDown() {
-    String csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "csrf", "csrftoken");
-    LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
+    String csrfToken = GetTokenRequests.getTokenByName(requestSpec, "csrf", "csrftoken");
+    LogoutRequests.post(requestSpec, csrfToken)
         .then()
         .assertThat()
         .statusCode(OK);
@@ -35,7 +35,7 @@ public class LoginTests {
 
   @Test
   void givenValidLoginTokenCanLoginSuccessfully() {
-    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
+    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, "login", "logintoken");
     final User user = User.builder()
             .name("Mytestuser12345@Mytestuserbot12345")
             .password("6ker6i5itf0rhm7mfi08vrrvtjmfcnsg")
@@ -48,7 +48,7 @@ public class LoginTests {
       put("lgname", user.name());
     }};
 
-    LoginRequests.post(requestSpec, COOKIE_FILTER, body)
+    LoginRequests.post(requestSpec, body)
         .then()
         .assertThat()
         .statusCode(OK)

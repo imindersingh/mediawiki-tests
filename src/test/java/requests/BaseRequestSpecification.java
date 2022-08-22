@@ -6,11 +6,13 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
 
 public final class BaseRequestSpecification {
+  public static final CookieFilter COOKIE_FILTER = new CookieFilter();
   private BaseRequestSpecification() { }
-  public static RequestSpecification requestSpecification(final String baseUrl, final CookieFilter cookieFilter) {
+
+  public static RequestSpecification requestSpecification(final String baseUrl) {
     return new RequestSpecBuilder()
             .setBaseUri(baseUrl)
-            .addFilter(cookieFilter)
+            .addFilter(COOKIE_FILTER)
             .addQueryParam("format", "json")
             .log(LogDetail.ALL)
             .build();

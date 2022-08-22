@@ -1,4 +1,3 @@
-import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,14 +13,13 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 
 public class TokenGenerationTests {
-  private static final CookieFilter COOKIE_FILTER = new CookieFilter();
   public static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
   private static final int OK = 200;
   private static RequestSpecification requestSpec;
 
   @BeforeAll
   public static void setUp() {
-    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
+    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL);
   }
 
   @AfterEach
@@ -32,7 +30,7 @@ public class TokenGenerationTests {
       put("type", "csrf");
     }};
 
-    String csrfToken = GetTokenRequests.get(requestSpec, COOKIE_FILTER, getTokenQueryParams)
+    String csrfToken = GetTokenRequests.get(requestSpec, getTokenQueryParams)
         .then()
         .assertThat()
         .statusCode(OK)
@@ -40,7 +38,7 @@ public class TokenGenerationTests {
         .path("query.tokens.csrftoken");
 
     if (!csrfToken.equals("+\\")) {
-      LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
+      LogoutRequests.post(requestSpec, csrfToken)
           .then()
           .assertThat()
           .statusCode(OK);
@@ -59,7 +57,7 @@ public class TokenGenerationTests {
     final int validTokenLength = 42;
     final String defaultToken = "+\\";
 
-    GetTokenRequests.get(requestSpec, COOKIE_FILTER, getTokenQueryParams)
+    GetTokenRequests.get(requestSpec, getTokenQueryParams)
         .then()
         .assertThat()
         .statusCode(OK)
@@ -77,13 +75,13 @@ public class TokenGenerationTests {
 
   @Test
   void whenLoggedInThenCanGetAllTokens() {
-    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
+    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, "login", "logintoken");
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
       put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
       put("lgtoken", loginToken);
       put("lgname", "Mytestuser12345@Mytestuserbot12345");
     }};
-    LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
+    LoginRequests.login(requestSpec, loginFormParameters);
 
     final String tokenType = "*";
     final Map<String, ?> getTokenQueryParams = new HashMap<>() {{
@@ -94,7 +92,7 @@ public class TokenGenerationTests {
 
     final int validTokenLength = 42;
 
-    GetTokenRequests.get(requestSpec, COOKIE_FILTER, getTokenQueryParams)
+    GetTokenRequests.get(requestSpec, getTokenQueryParams)
         .then()
         .assertThat()
         .statusCode(OK)

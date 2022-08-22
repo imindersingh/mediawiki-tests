@@ -21,7 +21,6 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class CreatePageTests {
-  private static final CookieFilter COOKIE_FILTER = new CookieFilter();
   private static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
   private static final int OK = 200;
   private static RequestSpecification requestSpec;
@@ -29,8 +28,8 @@ public class CreatePageTests {
 
   @BeforeAll
   public static void setUp() {
-    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
-    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
+    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL);
+    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, "login", "logintoken");
     final User user = User.builder()
             .name("Mytestuser12345@Mytestuserbot12345")
             .password("6ker6i5itf0rhm7mfi08vrrvtjmfcnsg")
@@ -40,13 +39,13 @@ public class CreatePageTests {
       put("lgtoken", loginToken);
       put("lgname", user.name());
     }};
-    LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
-    csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "csrf", "csrftoken");
+    LoginRequests.login(requestSpec, loginFormParameters);
+    csrfToken = GetTokenRequests.getTokenByName(requestSpec, "csrf", "csrftoken");
   }
 
   @AfterAll
   public static void tearDown() {
-    LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
+    LogoutRequests.post(requestSpec, csrfToken)
         .then()
         .assertThat()
         .statusCode(OK);
@@ -65,7 +64,7 @@ public class CreatePageTests {
       put("token", csrfToken);
     }};
 
-    Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
+    Response createPageResponse = EditPageRequests.post(requestSpec, createPage);
     createPageResponse.then().assertThat()
         .statusCode(OK)
         .body("edit.result", equalTo("Success"))
@@ -87,7 +86,7 @@ public class CreatePageTests {
       put("token", token);
     }};
 
-    Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
+    Response createPageResponse = EditPageRequests.post(requestSpec, createPage);
     createPageResponse.then().assertThat()
         .statusCode(OK)
         .body("error.code", equalTo("badtoken"))

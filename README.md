@@ -53,22 +53,24 @@ The libraries used in this framework include:
 
 ```
 ├── src
-│   └── test
-│       ├── java
-│       │   ├── CreatePageTests.java
-│       │   ├── EditPageTests.java
-│       │   ├── LoginTests.java
-│       │   ├── TokenGenerationTests.java
-│       │   ├── requests
-│       │   │   ├── BaseRequestSpecification.java
-│       │   │   ├── EditPageRequests.java
-│       │   │   ├── GetPageRevisionsRequest.java
-│       │   │   ├── GetTokenRequests.java
-│       │   │   ├── LoginRequests.java
-│       │   │   └── LogoutRequests.java
-│       │   └── utils
-│       │       └── Helper.java
-│       └── resources
+   └── test
+       └── java
+           ├── CreatePageTests.java
+           ├── EditPageTests.java
+           ├── LoginTests.java
+           ├── TokenGenerationTests.java
+           ├── model
+           │   └── User.java
+           ├── requests
+           │   ├── BaseRequestSpecification.java
+           │   ├── EditPageRequests.java
+           │   ├── GetPageRevisionsRequest.java
+           │   ├── GetTokenRequests.java
+           │   ├── LoginRequests.java
+           │   └── LogoutRequests.java
+           └── utils
+               └── Helper.java
+
 
 ```
 

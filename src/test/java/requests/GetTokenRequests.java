@@ -1,6 +1,5 @@
 package requests;
 
-import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -12,11 +11,11 @@ import static org.hamcrest.CoreMatchers.is;
 
 public final class GetTokenRequests {
   private GetTokenRequests() { }
+
   public static Response get(final RequestSpecification requestSpecification,
-                             final CookieFilter cookieFilter,
                              final Map<String, ?> queryParams) {
     return given(requestSpecification)
-        .filter(cookieFilter)
+        .filter(BaseRequestSpecification.COOKIE_FILTER)
         .queryParams(queryParams)
         .when()
         .get().prettyPeek()
@@ -26,7 +25,6 @@ public final class GetTokenRequests {
   }
 
   public static String getTokenByName(final RequestSpecification requestSpecification,
-                                      final CookieFilter cookieFilter,
                                       final String type,
                                       final String tokenName) {
     final Map<String, ?> queryParams = new HashMap<>() {{
@@ -35,11 +33,10 @@ public final class GetTokenRequests {
       put("type", type);
     }};
     final String tokenPath = String.format("query.tokens.%s", tokenName);
-    Response getTokenResponse = get(requestSpecification, cookieFilter, queryParams);
+    Response getTokenResponse = get(requestSpecification, queryParams);
     return getTokenResponse.then().assertThat()
         .statusCode(200)
         .body(String.format("%s.size()", tokenPath), is(42))
         .extract().body().path(tokenPath);
   }
-
 }

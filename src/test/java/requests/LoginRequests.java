@@ -1,6 +1,5 @@
 package requests;
 
-import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
@@ -11,11 +10,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public final class LoginRequests {
   private LoginRequests() { }
+
   public static Response post(final RequestSpecification requestSpecification,
-                              final CookieFilter cookieFilter,
                               final Map<String, ?> formParams) {
     return given(requestSpecification)
-        .filter(cookieFilter)
+        .filter(BaseRequestSpecification.COOKIE_FILTER)
         .queryParam("action", "login")
         .formParams(formParams)
         .when()
@@ -25,9 +24,8 @@ public final class LoginRequests {
         .response();
   }
   public static void login(final RequestSpecification requestSpecification,
-                           final CookieFilter cookieFilter,
                            final Map<String, ?> formParams) {
-    Response loginResponse = post(requestSpecification, cookieFilter, formParams);
+    Response loginResponse = post(requestSpecification, formParams);
     loginResponse.then().assertThat()
         .statusCode(200)
         .body("login.result", equalTo("Success"));

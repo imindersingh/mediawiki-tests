@@ -1,32 +1,32 @@
+import io.restassured.filter.cookie.CookieFilter;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import io.restassured.filter.cookie.CookieFilter;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import requests.BaseRequestSpecification;
-import requests.EditPageRequests;
 import requests.GetTokenRequests;
+import requests.EditPageRequests;
+import requests.BaseRequestSpecification;
 import requests.LoginRequests;
 import requests.LogoutRequests;
 import utils.Helper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class CreatePageTests {
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
+  private static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
   private static RequestSpecification requestSpec;
   private static String csrfToken;
 
   @BeforeAll
   public static void setUp() {
-    requestSpec = BaseRequestSpecification.requestSpecification("https://test.wikipedia.org/w/api.php", COOKIE_FILTER);
+    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
     final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
       put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
@@ -36,6 +36,7 @@ public class CreatePageTests {
     LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
     csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "csrf", "csrftoken");
   }
+
   @AfterAll
   public static void tearDown() {
     LogoutRequests.post(requestSpec, COOKIE_FILTER, csrfToken)
@@ -43,10 +44,10 @@ public class CreatePageTests {
         .assertThat()
         .statusCode(200);
   }
+
   @Test
   void givenValidCsrfTokenThenCanCreatePage() {
     final String pageTitle = Helper.getRandomAlphanumeric(15);
-
     final Map<String, ?> createPage = new HashMap<>() {{
       put("title", pageTitle);
       put("text", "This is my new page 123!");
@@ -58,7 +59,6 @@ public class CreatePageTests {
     }};
 
     Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
-
     createPageResponse.then().assertThat()
         .statusCode(200)
         .body("edit.result", equalTo("Success"))
@@ -81,7 +81,6 @@ public class CreatePageTests {
     }};
 
     Response createPageResponse = EditPageRequests.post(requestSpec, COOKIE_FILTER, createPage);
-
     createPageResponse.then().assertThat()
         .statusCode(200)
         .body("error.code", equalTo("badtoken"))

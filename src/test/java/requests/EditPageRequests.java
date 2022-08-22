@@ -1,15 +1,15 @@
 package requests;
 
-import java.util.Map;
-
 import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 
-public class EditPageRequests {
-
+public final class EditPageRequests {
+  private EditPageRequests() { }
   public static Response post(final RequestSpecification requestSpecification,
                               final CookieFilter cookieFilter,
                               final Map<String, ?> formParams) {

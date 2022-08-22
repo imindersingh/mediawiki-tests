@@ -7,7 +7,7 @@ Api tests for MediaWiki functionality using Rest Assured.
 - Maven
 
 ## Approach
-- My first step in understanding the functionlity was to read through the documentation before creating any 
+- My first step in understanding the functionality was to read through the documentation before creating any 
   automated checks.
 - I found the documentation quite difficult to navigate through but needless to say this is the fun part of testing 
   applications and software.
@@ -89,7 +89,7 @@ Some improvements that I think can be made include:
 - Whilst maps for query and form params is acceptable, there is a lot of hardcoded values in the tests, so to eliminate this the request and responses can be converted into DTOS. 
 - I did try to model this with the edit page tests use a `Page` model and passed this in as a body to the POST request, but this did not quite work. I also tried setting the `Content-Type` header as well. I would have explored this further given the time.
 - Things like credentials, urls and so forth can be extracted out into properties to allow the tests to be more readable and scalable to run on different environments.
-- I have implemented github [actions](https://github.com/imindersingh/mediawiki-tests/actions) to build and run the 
+- I have implemented GitHub [actions](https://github.com/imindersingh/mediawiki-tests/actions) to build and run the 
   tests. The tests run, but some fail intermittently because of the IP range used being blacklisted by mediawiki. A potential around this would be to spoof the ip and pass 
   this in the headers. See failure [here](https://github.com/imindersingh/mediawiki-tests/runs/7904661702?check_suite_focus=true#step:4:7086).
 - For the testing, I would have liked to further explore the APIs using POISED to devise more tests around validation, functionality, edge cases and integrations.

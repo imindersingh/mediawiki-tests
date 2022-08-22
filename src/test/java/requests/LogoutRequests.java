@@ -6,8 +6,8 @@ import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 
-public class LogoutRequests {
-
+public final class LogoutRequests {
+  private LogoutRequests() { }
   public static Response post(final RequestSpecification requestSpecification,
                               final CookieFilter cookieFilter,
                               final String csrfToken) {
@@ -21,5 +21,4 @@ public class LogoutRequests {
         .extract()
         .response();
   }
-
 }

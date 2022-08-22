@@ -1,36 +1,34 @@
+import io.restassured.filter.cookie.CookieFilter;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import requests.GetTokenRequests;
+import requests.EditPageRequests;
+import requests.BaseRequestSpecification;
+import requests.LoginRequests;
+import requests.LogoutRequests;
+import requests.GetPageRevisionsRequest;
+import utils.Helper;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import io.restassured.filter.cookie.CookieFilter;
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import requests.BaseRequestSpecification;
-import requests.EditPageRequests;
-import requests.GetPageRevisionsRequest;
-import requests.GetTokenRequests;
-import requests.LoginRequests;
-import requests.LogoutRequests;
-import utils.Helper;
-
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 
 public class EditPageTests {
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
+  private static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
   private static RequestSpecification requestSpec;
   private static String csrfToken;
 
-  @SuppressWarnings("checkstyle:WhitespaceAfter")
   @BeforeAll
   public static void setUp() {
-    requestSpec = BaseRequestSpecification.requestSpecification("https://test.wikipedia.org/w/api.php", COOKIE_FILTER);
+    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
     final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
       put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
@@ -38,7 +36,7 @@ public class EditPageTests {
       put("lgname", "Mytestuser12345@Mytestuserbot12345");
     }};
     LoginRequests.login(requestSpec, COOKIE_FILTER, loginFormParameters);
-    csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER,"csrf", "csrftoken");
+    csrfToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "csrf", "csrftoken");
   }
 
   @AfterAll
@@ -98,7 +96,7 @@ public class EditPageTests {
         .body("edit.result", equalTo("Success"))
         .body("edit.title", equalTo(pageTitle));
 
-    JsonPath body = new JsonPath(createPageResponse.body().asString());
+    final JsonPath body = new JsonPath(createPageResponse.body().asString());
     final String currentTimeStamp = body.getString("curtimestamp");
     final String pageId = body.getString("edit.pageid");
 
@@ -132,14 +130,13 @@ public class EditPageTests {
     Assertions.assertTrue(actualUpdatedText.contains(expectedUpdatedText));
   }
 
-  private static String getBaseTimeStamp(String pageTitle, String pageId) {
+  private static String getBaseTimeStamp(final String pageTitle, final String pageId) {
     Response getPageRevisionResponse = getPageRevision(pageTitle, pageId);
     JsonPath body = new JsonPath(getPageRevisionResponse.then().extract().body().asString());
-    return body.getString(String.format("query.pages.%s.revisions[0].timestamp"
-        , pageId));
+    return body.getString(String.format("query.pages.%s.revisions[0].timestamp", pageId));
   }
 
-  private static Response getPageRevision(String pageTitle, String pageId) {
+  private static Response getPageRevision(final String pageTitle, final String pageId) {
     final Map<String, ?> queryParams = new HashMap<>() {{
       put("action", "query");
       put("prop", "revisions");
@@ -157,37 +154,4 @@ public class EditPageTests {
 
     return getPageRevisionResponse;
   }
-
-  private static String getToken(final String type, final String tokenName) {
-    final Map<String, ?> queryParams = new HashMap<>() {{
-      put("action", "query");
-      put("meta", "tokens");
-      put("type", type);
-    }};
-    final String tokenPath = String.format("query.tokens.%s", tokenName);
-    Response getTokenResponse = GetTokenRequests.get(requestSpec, COOKIE_FILTER, queryParams);
-
-    return getTokenResponse.then().assertThat()
-        .statusCode(200)
-        .body(String.format("%s.size()", tokenPath), is(42))
-        .extract().body().path(tokenPath);
-  }
-
-//  private static void login(final String loginToken) {
-//    final Map<String, ?> loginFormParameters = new HashMap<>() {{
-//      put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
-//      put("lgtoken", loginToken);
-//      put("lgname", "Mytestuser12345@Mytestuserbot12345");
-//    }};
-//
-//    Response loginResponse = PostLoginRequest.post(requestSpec, COOKIE_FILTER, loginFormParameters);
-//
-//    loginResponse
-//        .then()
-//        .assertThat()
-//        .statusCode(200)
-//        .body("login.result", equalTo("Success"))
-//        .body("login.lguserid", equalTo(54882))
-//        .body("login.lgusername", equalTo("Mytestuser12345"));
-//  }
 }

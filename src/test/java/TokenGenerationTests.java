@@ -1,27 +1,26 @@
+import io.restassured.filter.cookie.CookieFilter;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import io.restassured.filter.cookie.CookieFilter;
-import io.restassured.specification.RequestSpecification;
 import requests.BaseRequestSpecification;
 import requests.GetTokenRequests;
 import requests.LoginRequests;
 import requests.LogoutRequests;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.is;
 
 public class TokenGenerationTests {
-
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
+  public static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
   private static RequestSpecification requestSpec;
 
   @BeforeAll
   public static void setUp() {
-    requestSpec = BaseRequestSpecification.requestSpecification("https://test.wikipedia.org/w/api.php", COOKIE_FILTER);
+    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
   }
 
   @AfterEach
@@ -77,7 +76,7 @@ public class TokenGenerationTests {
 
   @Test
   void whenLoggedInThenCanGetAllTokens() {
-    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER,"login", "logintoken");
+    final String loginToken = GetTokenRequests.getTokenByName(requestSpec, COOKIE_FILTER, "login", "logintoken");
     final Map<String, ?> loginFormParameters = new HashMap<>() {{
       put("lgpassword", "6ker6i5itf0rhm7mfi08vrrvtjmfcnsg");
       put("lgtoken", loginToken);

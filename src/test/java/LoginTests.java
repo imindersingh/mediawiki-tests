@@ -1,25 +1,25 @@
+import io.restassured.filter.cookie.CookieFilter;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import io.restassured.filter.cookie.CookieFilter;
-import io.restassured.specification.RequestSpecification;
 import requests.BaseRequestSpecification;
 import requests.GetTokenRequests;
 import requests.LoginRequests;
 import requests.LogoutRequests;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class LoginTests {
   private static final CookieFilter COOKIE_FILTER = new CookieFilter();
+  public static final String BASE_URL = "https://test.wikipedia.org/w/api.php";
   private static RequestSpecification requestSpec;
   @BeforeAll
   public static void setUp() {
-    requestSpec = BaseRequestSpecification.requestSpecification("https://test.wikipedia.org/w/api.php", COOKIE_FILTER);
+    requestSpec = BaseRequestSpecification.requestSpecification(BASE_URL, COOKIE_FILTER);
   }
 
   @AfterAll
